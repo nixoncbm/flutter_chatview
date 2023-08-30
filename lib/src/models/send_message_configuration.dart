@@ -211,6 +211,8 @@ class VoiceRecordingConfiguration {
     this.micIcon,
     this.recorderIconColor,
     this.stopIcon,
+    this.maxDuration,
+    this.sampleRate,
   });
 
   /// Applies styles to waveform.
@@ -237,4 +239,8 @@ class VoiceRecordingConfiguration {
 
   /// Applies color to mic and stop icon.
   final Color? recorderIconColor;
+
+  final Duration? maxDuration;
+
+  final int? sampleRate;
 }

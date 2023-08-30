@@ -27,6 +27,7 @@ import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../chatview.dart';
 import '../utils/debounce.dart';
@@ -96,6 +97,8 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
 
   late Debouncer debouncer;
 
+  Timer? timer;
+
   @override
   void initState() {
     attachListeners();
@@ -112,6 +115,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
 
   @override
   void dispose() {
+    timer?.cancel();
     debouncer.dispose();
     composingStatus.dispose();
     isRecording.dispose();
@@ -143,24 +147,28 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
           return Row(
             children: [
               if (isRecordingValue && controller != null && !kIsWeb)
-                AudioWaveforms(
-                  size: Size(MediaQuery.of(context).size.width * 0.75, 50),
-                  recorderController: controller!,
-                  margin: voiceRecordingConfig?.margin,
-                  padding: voiceRecordingConfig?.padding ??
-                      const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: voiceRecordingConfig?.decoration ??
-                      BoxDecoration(
-                        color: voiceRecordingConfig?.backgroundColor,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                  waveStyle: voiceRecordingConfig?.waveStyle ??
-                      WaveStyle(
-                        extendWaveform: true,
-                        showMiddleLine: false,
-                        waveColor: voiceRecordingConfig?.waveStyle?.waveColor ??
-                            Colors.black,
-                      ),
+                SafeArea(
+                  top: false,
+                  child: AudioWaveforms(
+                    size: Size(MediaQuery.of(context).size.width * 0.75, 50),
+                    recorderController: controller!,
+                    margin: voiceRecordingConfig?.margin,
+                    padding: voiceRecordingConfig?.padding ??
+                        const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: voiceRecordingConfig?.decoration ??
+                        BoxDecoration(
+                          color: voiceRecordingConfig?.backgroundColor,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                    waveStyle: voiceRecordingConfig?.waveStyle ??
+                        WaveStyle(
+                          showDurationLabel: true,
+                          extendWaveform: true,
+                          showMiddleLine: false,
+                          waveColor: voiceRecordingConfig?.waveStyle?.waveColor ??
+                              Colors.black,
+                        ),
+                  ),
                 )
               else
                 Expanded(
@@ -286,9 +294,23 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       "Voice messages are only supported with android and ios platform",
     );
     if (!isRecording.value) {
-      await controller?.record();
+      var date = DateTime.now().microsecondsSinceEpoch;
+      final directory = await getTemporaryDirectory();
+      final path = directory.path;
+      await controller?.record(
+        path: '$path/${"$date.m4a"}',
+        sampleRate: Platform.isIOS ? sendMessageConfig?.voiceRecordingConfiguration?.sampleRate : null
+      );
       isRecording.value = true;
+      if(sendMessageConfig?.voiceRecordingConfiguration?.maxDuration != null) {
+        timer = Timer(sendMessageConfig!.voiceRecordingConfiguration!.maxDuration!, () async {
+          final path = await controller?.stop();
+          isRecording.value = false;
+          widget.onRecordingComplete(path);
+        });
+      }
     } else {
+      timer?.cancel();
       final path = await controller?.stop();
       isRecording.value = false;
       widget.onRecordingComplete(path);

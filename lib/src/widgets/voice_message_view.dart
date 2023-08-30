@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/voice_message_configuration.dart';
 import 'package:chatview/src/widgets/reaction_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class VoiceMessageView extends StatefulWidget {
   const VoiceMessageView({
@@ -60,15 +65,35 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
   @override
   void initState() {
     super.initState();
-    controller = PlayerController()
-      ..preparePlayer(
-        path: widget.message.message,
-        noOfSamples: widget.config?.playerWaveStyle
-                ?.getSamplesForWidth(widget.screenWidth * 0.5) ??
-            playerWaveStyle.getSamplesForWidth(widget.screenWidth * 0.5),
-      ).whenComplete(() => widget.onMaxDuration?.call(controller.maxDuration));
-    playerStateSubscription = controller.onPlayerStateChanged
-        .listen((state) => _playerState.value = state);
+
+    if(!widget.message.message.isUrl){
+      controller = PlayerController()
+        ..preparePlayer(
+          path: widget.message.message,
+          noOfSamples: widget.config?.playerWaveStyle
+              ?.getSamplesForWidth(widget.screenWidth * 0.5) ??
+              playerWaveStyle.getSamplesForWidth(widget.screenWidth * 0.5),
+        ).whenComplete(() => widget.onMaxDuration?.call(controller.maxDuration));
+      playerStateSubscription = controller.onPlayerStateChanged
+          .listen((state) => _playerState.value = state);
+    } else {
+      controller = PlayerController();
+      downloadAudioFromUrl(widget.message.message, widget.message.id).then((audioDownloaded) {
+        controller.preparePlayer(
+          path: audioDownloaded,
+          noOfSamples: widget.config?.playerWaveStyle
+              ?.getSamplesForWidth(widget.screenWidth * 0.5) ??
+              playerWaveStyle.getSamplesForWidth(widget.screenWidth * 0.5),
+        ).whenComplete(() => widget.onMaxDuration?.call(controller.maxDuration));
+        playerStateSubscription = controller.onPlayerStateChanged
+            .listen((state) => _playerState.value = state);
+      });
+    }
+  }
+
+  Future<String> downloadAudioFromUrl(String url, String id) async {
+    var file = await DefaultCacheManager().getSingleFile(url);
+    return file.path;
   }
 
   @override

@@ -285,7 +285,9 @@ class _ChatViewState extends State<ChatView>
       }
       _assignReplyMessage();
     }
-    chatController.scrollToLastMessage();
+    if(chatController.scrollController.hasClients) {
+      chatController.scrollToLastMessage();
+    }
   }
 
   void _assignReplyMessage() {
