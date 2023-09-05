@@ -110,12 +110,26 @@ class ChatViewAppBar extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  if (profilePicture != null)
+                  if (profilePicture != null &&
+                      profilePicture!.trim().isNotEmpty) ...[
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: CircleAvatar(
                           backgroundImage: NetworkImage(profilePicture!)),
                     ),
+                  ] else ...[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: CircleAvatar(
+                          child: ClipRRect(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: Text(chatTitle)),
+                            ),
+                          ),
+                      ),
+                    ),
+                  ],
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
