@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/models/chat_option.dart';
 import 'package:chatview/src/widgets/chat_list_widget.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatview_state_widget.dart';
@@ -54,6 +55,8 @@ class ChatView extends StatefulWidget {
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
+    this.chatOptions,
+    required this.typeWithChat
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -136,6 +139,15 @@ class ChatView extends StatefulWidget {
 
   /// Provides callback when user tap on chat list.
   final VoidCallBack? onChatListTap;
+
+  /// Options de chat messages direct
+  final List<ChatOption>? chatOptions;
+
+  /// TypeWithChat  store clipper
+  final int typeWithChat;
+
+  /// Internacionalizacin chat
+ // final AppLocalizations localizations;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -253,21 +265,23 @@ class _ChatViewState extends State<ChatView>
                         );
                       },
                     ),
-                  if (featureActiveConfig.enableTextField)
-                    SendMessageWidget(
-                      key: _sendMessageKey,
-                      chatController: chatController,
-                      sendMessageBuilder: widget.sendMessageBuilder,
-                      sendMessageConfig: widget.sendMessageConfig,
-                      backgroundColor: chatBackgroundConfig.backgroundColor,
-                      onSendTap: _onSendTap,
-                      onReplyCallback: (reply) => replyMessage.value = reply,
-                      onReplyCloseCallback: () =>
-                          replyMessage.value = const ReplyMessage(),
-                    ),
                 ],
               ),
             ),
+            if (featureActiveConfig.enableTextField)
+              SendMessageWidget(
+                key: _sendMessageKey,
+                chatController: chatController,
+                sendMessageBuilder: widget.sendMessageBuilder,
+                sendMessageConfig: widget.sendMessageConfig,
+                backgroundColor: chatBackgroundConfig.backgroundColor,
+                onSendTap: _onSendTap,
+                onReplyCallback: (reply) => replyMessage.value = reply,
+                onReplyCloseCallback: () =>
+                replyMessage.value = const ReplyMessage(),
+                chatOptions: widget.chatOptions,
+                typeWithChat: widget.typeWithChat,
+              ),
           ],
         ),
       ),

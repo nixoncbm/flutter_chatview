@@ -75,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChatView(
+        typeWithChat: 30,
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,

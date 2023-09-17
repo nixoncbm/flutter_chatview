@@ -24,6 +24,7 @@ import 'dart:io' if (kIsWeb) 'dart:html';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/models/chat_option.dart';
 import 'package:chatview/src/utils/package_strings.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -41,7 +42,8 @@ class SendMessageWidget extends StatefulWidget {
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
-  }) : super(key: key);
+      this.chatOptions,
+      required this.typeWithChat}) : super(key: key);
 
   /// Provides call back when user tap on send button on text field.
   final StringMessageCallBack onSendTap;
@@ -63,6 +65,12 @@ class SendMessageWidget extends StatefulWidget {
 
   /// Provides controller for accessing few function for running chat.
   final ChatController chatController;
+
+  /// Option message direct
+  final List<ChatOption>? chatOptions;
+
+  /// TypeWithChat  store clipper
+  final int typeWithChat;
 
   @override
   State<SendMessageWidget> createState() => SendMessageWidgetState();
@@ -231,6 +239,10 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           sendMessageConfig: widget.sendMessageConfig,
                           onRecordingComplete: _onRecordingComplete,
                           onImageSelected: _onImageSelected,
+                          chatOptions: widget.chatOptions,
+                          typeWithChat: widget.typeWithChat,
+                          onChatOption: (chatOption) =>
+                              _onChatOption(chatOption),
                         )
                       ],
                     ),
@@ -312,6 +324,17 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
       );
       _assignRepliedMessage();
       _textEditingController.clear();
+    }
+  }
+
+  _onChatOption(String? chatOption) {
+    if (chatOption != null) {
+      widget.onSendTap.call(
+        chatOption.trim(),
+        replyMessage,
+        MessageType.text,
+      );
+      _assignRepliedMessage();
     }
   }
 
