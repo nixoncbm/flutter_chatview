@@ -34,7 +34,6 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../chatview.dart';
 import '../utils/debounce.dart';
-import '../utils/package_strings.dart';
 
 class ChatUITextField extends StatefulWidget {
   const ChatUITextField({
@@ -46,8 +45,8 @@ class ChatUITextField extends StatefulWidget {
     required this.onRecordingComplete,
     required this.onImageSelected,
       this.chatOptions,
-      required this.typeWithChat,
-     required this.onChatOption})
+      this.typeWithChat,
+      required this.onChatOption})
       : super(key: key);
 
   /// Provides configuration of default text field in chat.
@@ -72,7 +71,7 @@ class ChatUITextField extends StatefulWidget {
   final List<ChatOption>? chatOptions;
 
   /// TypeWithChat  store clipper
-  final int typeWithChat;
+  final int? typeWithChat;
 
   /// Provides callback when user tap on text field.
   final Function(String?) onChatOption;
@@ -167,10 +166,11 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
             children: [
               if (!isRecordingValue && !kIsWeb) ...[
                 if (widget.chatOptions != null &&
-                    widget.chatOptions!.isNotEmpty) ...[
+                    widget.chatOptions!.isNotEmpty &&
+                    widget.typeWithChat != null) ...[
                   ListOptionMessage(
                     listChatOption: widget.chatOptions!,
-                    typeWithChat: widget.typeWithChat,
+                    typeWithChat: widget.typeWithChat!,
                     onPressed: (message) {
                       if(widget.chatOptions!=null){
                         widget.onChatOption(message);

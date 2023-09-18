@@ -57,7 +57,7 @@ class ChatView extends StatefulWidget {
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
     this.chatOptions,
-    required this.typeWithChat,
+    this.typeWithChat,
     this.l10n = const ChatViewL10nEs(),
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
@@ -146,7 +146,7 @@ class ChatView extends StatefulWidget {
   final List<ChatOption>? chatOptions;
 
   /// TypeWithChat  store clipper
-  final int typeWithChat;
+  final int? typeWithChat;
 
   /// Localized copy. Extend [ChatViewL10n] class to create your own copy or use
   /// existing one, like the default [ChatViewL10nEn]. You can customize only

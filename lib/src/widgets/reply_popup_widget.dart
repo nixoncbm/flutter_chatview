@@ -22,8 +22,6 @@
 import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:flutter/material.dart';
 
-import 'package:chatview/src/utils/package_strings.dart';
-
 import '../values/typedefs.dart';
 
 class ReplyPopupWidget extends StatelessWidget {

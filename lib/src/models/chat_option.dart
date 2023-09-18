@@ -4,11 +4,11 @@ import 'dart:convert';
 class ChatOption {
   List<MessageOption>? messages;
   int? typeWithChat;
+  String? typeRol;
 
   ChatOption({
     this.messages,
-    this.typeWithChat,
-  });
+    this.typeWithChat, this.typeRol});
 
   factory ChatOption.fromRawJson(String str) =>
       ChatOption.fromJson(json.decode(str));
@@ -21,6 +21,7 @@ class ChatOption {
         : List<MessageOption>.from(
         json["messages"]!.map((x) => MessageOption.fromJson(x))),
     typeWithChat: json["typeWithChat"],
+    typeRol: json["typeRol"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -28,6 +29,7 @@ class ChatOption {
         ? []
         : List<dynamic>.from(messages!.map((x) => x.toJson())),
     "typeWithChat": typeWithChat,
+    "typeRol": typeRol,
   };
 }
 

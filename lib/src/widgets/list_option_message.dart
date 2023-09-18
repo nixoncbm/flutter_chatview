@@ -27,7 +27,7 @@ class ListOptionMessage extends StatelessWidget {
     return Column(
       children: [
         for (ChatOption chatOption in listChatOption) ...[
-          if (chatOption.typeWithChat == 10) ...[
+          if (chatOption.typeWithChat == typeWithChat) ...[
             Container(
               margin: const EdgeInsets.only(top: 10, bottom: 10),
               height: 40,
@@ -50,7 +50,7 @@ class ListOptionMessage extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(10.0)),
                         color: backgroundColor ??
                             (isDarkMode
-                                ? theme.tertiary.withOpacity(0.3)
+                                ? theme.secondary .withOpacity(0.3)
                                 : theme.tertiaryContainer),
                         border: Border.all(
                           width: 1.0,
@@ -68,7 +68,7 @@ class ListOptionMessage extends StatelessWidget {
                           left: 5, right: 5, bottom: 5, top: 7),
                       child: Row(
                         children: [
-                          if (message.icon != null && message.icon != '') ...[
+                          if (message.icon != null && message.icon != '' && (message.icon.startsWith('https:') || message.icon.startsWith('http:'))) ...[
                             CachedNetworkImage(
                               imageUrl: message.icon,
                               progressIndicatorBuilder:
@@ -78,7 +78,7 @@ class ListOptionMessage extends StatelessWidget {
                                 strokeWidth: 1,
                               ),
                               errorWidget: (context, url, error) => const Icon(
-                                  Icons.image_not_supported_outlined),
+                                  Icons.image_rounded),
                             ),
                           ],
                           Text(
