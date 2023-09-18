@@ -22,6 +22,7 @@
 
 library chatview;
 
+export 'src/chatview_l10n.dart';
 export 'src/widgets/chat_view.dart';
 export 'src/models/models.dart';
 export 'src/widgets/chat_view_appbar.dart';

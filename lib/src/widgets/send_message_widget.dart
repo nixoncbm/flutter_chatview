@@ -26,6 +26,7 @@ import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/chat_option.dart';
 import 'package:chatview/src/utils/package_strings.dart';
+import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -89,7 +90,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
       : null;
 
   String get _replyTo => replyMessage.replyTo == currentUser?.id
-      ? PackageStrings.you
+      ? InheritedViewL10n.of(context).l10n.you
       : repliedUser?.name ?? '';
 
   ChatUser? currentUser;
@@ -104,7 +105,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final replyTitle = "${PackageStrings.replyTo} $_replyTo";
+    final replyTitle = "${InheritedViewL10n.of(context).l10n.replyTo} $_replyTo";
     return widget.sendMessageBuilder != null
         ? Positioned(
             right: 0,
@@ -284,7 +285,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
               Colors.grey.shade700,
         ),
         Text(
-          PackageStrings.photo,
+          InheritedViewL10n.of(context).l10n.photo,
           style: TextStyle(
             color: widget.sendMessageConfig?.replyMessageColor ?? Colors.black,
           ),

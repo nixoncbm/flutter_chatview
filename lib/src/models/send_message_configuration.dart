@@ -71,6 +71,9 @@ class SendMessageConfiguration {
   /// Styling configuration for recorder widget.
   final VoiceRecordingConfiguration? voiceRecordingConfiguration;
 
+  ///style de chat option
+  final ChatOptionConfiguration? chatOptionConfiguration;
+
   const SendMessageConfiguration({
     this.textFieldConfig,
     this.textFieldBackgroundColor,
@@ -87,6 +90,7 @@ class SendMessageConfiguration {
     this.enableGalleryImagePicker = true,
     this.voiceRecordingConfiguration,
     this.micIconColor,
+    this.chatOptionConfiguration
   });
 }
 
@@ -243,4 +247,18 @@ class VoiceRecordingConfiguration {
   final Duration? maxDuration;
 
   final int? sampleRate;
+}
+
+/// Styling configuration chat option
+class ChatOptionConfiguration {
+  const ChatOptionConfiguration({
+    this.backgroundColor,
+    this.textBackgroundColor,
+  });
+
+  /// If only background color needs to be changed then use this instead of
+  /// decoration.
+  final Color? backgroundColor;
+
+  final Color? textBackgroundColor;
 }

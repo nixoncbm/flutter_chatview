@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 class PackageStrings {
-  static const String today = "Today";
+/*  static const String today = "Today";
   static const String yesterday = "Yesterday";
   static const String repliedToYou = "Replied to you";
   static const String repliedBy = "Replied by";
@@ -33,5 +33,5 @@ class PackageStrings {
       "Tap and hold to multiply your reaction";
   static const String photo = "Photo";
   static const String send = "Send";
-  static const String you = "You";
+  static const String you = "You";*/
 }

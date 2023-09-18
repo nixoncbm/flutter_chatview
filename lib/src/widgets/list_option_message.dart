@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatview/src/models/chat_option.dart';
 import 'package:flutter/material.dart';
 
@@ -6,12 +7,16 @@ class ListOptionMessage extends StatelessWidget {
     Key? key,
     required this.listChatOption,
     required this.typeWithChat,
-    required this.onPressed,
-  }) : super(key: key);
+      required this.onPressed,
+      this.backgroundColor,
+      this.textBackgroundColor})
+      : super(key: key);
 
   final List<ChatOption> listChatOption;
   final int typeWithChat;
   final Function(String) onPressed;
+  final Color? backgroundColor;
+  final Color? textBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -22,70 +27,79 @@ class ListOptionMessage extends StatelessWidget {
     return Column(
       children: [
         for (ChatOption chatOption in listChatOption) ...[
-          if (chatOption.typeWithChat == typeWithChat) ...[
+          if (chatOption.typeWithChat == 10) ...[
             Container(
               margin: const EdgeInsets.only(top: 10, bottom: 10),
               height: 40,
               child: ListView.builder(
                 shrinkWrap: true,
-                reverse: true,
+                //reverse: true,
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: chatOption.messages!.length,
                 itemBuilder: (context, index) {
-                  return itemOption(
-                      context, chatOption.messages![index], theme, isDarkMode);
+                  MessageOption message = chatOption.messages![index];
+                  return SizedBox(
+                      child: InkWell(
+                    onTap: () {
+                      onPressed(message.chat!);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10.0)),
+                        color: backgroundColor ??
+                            (isDarkMode
+                                ? theme.tertiary.withOpacity(0.3)
+                                : theme.tertiaryContainer),
+                        border: Border.all(
+                          width: 1.0,
+                          color: backgroundColor ??
+                              (isDarkMode
+                                  ? theme.tertiary.withOpacity(0.3)
+                                  : theme.tertiaryContainer),
+                        ),
+                      ),
+                      margin: const EdgeInsets.only(
+                        right: 5.0,
+                        left: 5,
+                      ),
+                      padding: const EdgeInsets.only(
+                          left: 5, right: 5, bottom: 5, top: 7),
+                      child: Row(
+                        children: [
+                          if (message.icon != null && message.icon != '') ...[
+                            CachedNetworkImage(
+                              imageUrl: message.icon,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                value: downloadProgress.progress,
+                                strokeWidth: 1,
+                              ),
+                              errorWidget: (context, url, error) => const Icon(
+                                  Icons.image_not_supported_outlined),
+                            ),
+                          ],
+                          Text(
+                            message.chat!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: textBackgroundColor ??
+                                    (isDarkMode
+                                        ? theme.tertiaryContainer
+                                        : theme.tertiary)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ));
                 },
               ),
             ),
           ]
         ],
       ],
-    );
-  }
-
-  Widget itemOption(BuildContext context, MessageOption message,
-      ColorScheme theme, bool isDarkMod) {
-    return SizedBox(
-      child: InkWell(
-        onTap: () {
-          onPressed(message.chat!);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            color: theme.primary,
-            border: Border.all(
-              width: 1.0,
-              color: theme.primary,
-            ),
-          ),
-          margin: const EdgeInsets.only(
-            right: 5.0,
-            left: 5,
-          ),
-          padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 7),
-          child: Row(
-            children: [
-              if (message.icon != null && message.icon != '') ...[
-                Image.network(
-                  '${message.icon}',
-                  errorBuilder: (context, error, stackTrace) {
-                    return const SizedBox.shrink();
-                  },
-                )
-              ],
-              Text(
-                message.chat!,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color:
-                        isDarkMod ? theme.tertiary : theme.tertiaryContainer),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

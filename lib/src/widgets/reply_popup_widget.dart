@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/utils/package_strings.dart';
@@ -76,7 +77,7 @@ class ReplyPopupWidget extends StatelessWidget {
           InkWell(
             onTap: onReplyTap,
             child: Text(
-              PackageStrings.reply,
+              InheritedViewL10n.of(context).l10n.reply,
               style: textStyle,
             ),
           ),
@@ -84,14 +85,14 @@ class ReplyPopupWidget extends StatelessWidget {
             InkWell(
               onTap: onUnsendTap,
               child: Text(
-                PackageStrings.unsend,
+                InheritedViewL10n.of(context).l10n.unsend,
                 style: textStyle,
               ),
             ),
           InkWell(
             onTap: onMoreTap,
             child: Text(
-              PackageStrings.more,
+              InheritedViewL10n.of(context).l10n.more,
               style: textStyle,
             ),
           ),

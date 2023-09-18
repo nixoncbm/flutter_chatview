@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,9 +35,9 @@ extension TimeDifference on DateTime {
     final DateFormat formatter = DateFormat.yMMMMd(enUS);
     final differenceInDays = formattedDate.difference(DateTime.now()).inDays;
     if (differenceInDays == 0) {
-      return PackageStrings.today;
+      return '0';
     } else if (differenceInDays <= 1 && differenceInDays >= -1) {
-      return PackageStrings.yesterday;
+      return '1';//PackageStrings.yesterday;
     } else {
       return formatter.format(formattedDate);
     }
@@ -106,16 +107,16 @@ extension ConnectionStates on ConnectionState {
 
 /// Extension on nullable sting to return specific state string.
 extension ChatViewStateTitleExtension on String? {
-  String getChatViewStateTitle(ChatViewState state) {
+  String getChatViewStateTitle(ChatViewState state, BuildContext context) {
     switch (state) {
       case ChatViewState.hasMessages:
         return this ?? '';
       case ChatViewState.noData:
-        return this ?? 'No Messages';
+        return this ?? InheritedViewL10n.of(context).l10n.noMessages;
       case ChatViewState.loading:
         return this ?? '';
       case ChatViewState.error:
-        return this ?? 'Something went wrong !!';
+        return this ?? InheritedViewL10n.of(context).l10n.somethingWentWrong;
     }
   }
 }

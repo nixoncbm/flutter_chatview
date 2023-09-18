@@ -25,6 +25,7 @@ import 'dart:io' show Platform;
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/src/models/chat_option.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
+import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:chatview/src/widgets/list_option_message.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +100,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
 
   TextFieldConfiguration? get textFieldConfig =>
       sendMessageConfig?.textFieldConfig;
+
+  ChatOptionConfiguration? get chatOptionConfig =>
+      sendMessageConfig?.chatOptionConfiguration;
 
   OutlineInputBorder get _outLineBorder => OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.transparent),
@@ -219,8 +223,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                             textFieldConfig?.textCapitalization ??
                                 TextCapitalization.sentences,
                         decoration: InputDecoration(
-                          hintText: textFieldConfig?.hintText ??
-                              PackageStrings.message,
+                          hintText: textFieldConfig?.hintText ??  InheritedViewL10n.of(context).l10n.message,
                           fillColor:
                               sendMessageConfig?.textFieldBackgroundColor ??
                                   Colors.white,
