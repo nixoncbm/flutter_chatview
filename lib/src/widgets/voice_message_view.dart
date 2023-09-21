@@ -4,10 +4,12 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/voice_message_configuration.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:chatview/src/widgets/reaction_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 
 class VoiceMessageView extends StatefulWidget {
   const VoiceMessageView({
@@ -103,6 +105,7 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -115,49 +118,61 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
                     : widget.inComingChatBubbleConfig?.color,
               ),
           padding: widget.config?.padding ??
-              const EdgeInsets.symmetric(horizontal: 8),
+              const EdgeInsets.only(left: 8,right: 8, bottom: 8),
           margin: widget.config?.margin ??
               EdgeInsets.symmetric(
                 horizontal: 8,
                 vertical: widget.message.reaction.reactions.isNotEmpty ? 15 : 0,
               ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              ValueListenableBuilder<PlayerState>(
-                builder: (context, state, child) {
-                  return IconButton(
-                    onPressed: _playOrPause,
-                    icon:
-                        state.isStopped || state.isPaused || state.isInitialised
-                            ? widget.config?.playIcon ??
-                                const Icon(
-                                  Icons.play_arrow,
-                                  color: Colors.white,
-                                )
-                            : widget.config?.pauseIcon ??
-                                const Icon(
-                                  Icons.stop,
-                                  color: Colors.white,
-                                ),
-                  );
-                },
-                valueListenable: _playerState,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ValueListenableBuilder<PlayerState>(
+                    builder: (context, state, child) {
+                      return IconButton(
+                        onPressed: _playOrPause,
+                        icon:
+                            state.isStopped || state.isPaused || state.isInitialised
+                                ? widget.config?.playIcon ??
+                                    const Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.white,
+                                    )
+                                : widget.config?.pauseIcon ??
+                                    const Icon(
+                                      Icons.stop,
+                                      color: Colors.white,
+                                    ),
+                      );
+                    },
+                    valueListenable: _playerState,
+                  ),
+                  AudioFileWaveforms(
+                    size: Size(widget.screenWidth * 0.50, 60),
+                    playerController: controller,
+                    waveformType: WaveformType.fitWidth,
+                    playerWaveStyle:
+                        widget.config?.playerWaveStyle ?? playerWaveStyle,
+                    padding: widget.config?.waveformPadding ??
+                        const EdgeInsets.only(right: 10),
+                    margin: widget.config?.waveformMargin,
+                    animationCurve: widget.config?.animationCurve ?? Curves.easeIn,
+                    animationDuration: widget.config?.animationDuration ??
+                        const Duration(milliseconds: 500),
+                    enableSeekGesture: widget.config?.enableSeekGesture ?? true,
+                  ),
+                ],
               ),
-              AudioFileWaveforms(
-                size: Size(widget.screenWidth * 0.50, 60),
-                playerController: controller,
-                waveformType: WaveformType.fitWidth,
-                playerWaveStyle:
-                    widget.config?.playerWaveStyle ?? playerWaveStyle,
-                padding: widget.config?.waveformPadding ??
-                    const EdgeInsets.only(right: 10),
-                margin: widget.config?.waveformMargin,
-                animationCurve: widget.config?.animationCurve ?? Curves.easeIn,
-                animationDuration: widget.config?.animationDuration ??
-                    const Duration(milliseconds: 500),
-                enableSeekGesture: widget.config?.enableSeekGesture ?? true,
-              ),
+              Linkify(
+                text: dateFormatterMessage(widget.message.createdAt).toString(),
+                style: textTheme.bodyMedium!.copyWith(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              )
             ],
           ),
         ),

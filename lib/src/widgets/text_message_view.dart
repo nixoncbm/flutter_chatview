@@ -19,10 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -90,23 +89,34 @@ class TextMessageView extends StatelessWidget {
             color: highlightMessage ? highlightColor : _color,
             borderRadius: _borderRadius(textMessage),
           ),
-          child: textMessage.isUrl
-              ? LinkPreview(
-                  linkPreviewConfig: _linkPreviewConfig,
-                  url: textMessage,
-                )
-              : Linkify(
-                  text: textMessage,
-                  style: _textStyle ??
-                      textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                textMessage.isUrl
+                    ? LinkPreview(
+                        linkPreviewConfig: _linkPreviewConfig,
+                        url: textMessage,
+                      )
+                    : Linkify(
+                        text: textMessage,
+                        style: _textStyle ??
+                            textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                        onOpen: (url) {
+                          _launchURL(url.url);
+                        },
                       ),
-            onOpen: (url){
-              _launchURL(url.url);
-                  },
-                ),
-        ),
+                Linkify(
+                  text: dateFormatterMessage(message.createdAt).toString(),
+                  style: textTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                )
+              ],
+            )),
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
             key: key,

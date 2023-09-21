@@ -24,7 +24,9 @@ import 'dart:io';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 
 import 'reaction_widget.dart';
 import 'share_icon.dart';
@@ -74,6 +76,7 @@ class ImageMessageView extends StatelessWidget {
       children: [
         if (isMessageBySender) iconButton,
         Stack(
+          alignment: Alignment.bottomRight,
           children: [
             GestureDetector(
               onTap: () => imageMessageConfig?.onTap != null
@@ -133,6 +136,8 @@ class ImageMessageView extends StatelessWidget {
                 ),
               ),
             ),
+            HourMessage(hour:  dateFormatterMessage(message.createdAt)
+                .toString()),
             if (message.reaction.reactions.isNotEmpty)
               ReactionWidget(
                 isMessageBySender: isMessageBySender,
@@ -143,6 +148,49 @@ class ImageMessageView extends StatelessWidget {
         ),
         if (!isMessageBySender) iconButton,
       ],
+    );
+  }
+}
+
+class HourMessage extends StatelessWidget {
+  const HourMessage({super.key, required this.hour});
+
+  final String hour;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final theme= Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.only(right: 6),
+      child: Container(
+        alignment: Alignment.bottomRight,
+       // width: double.infinity,
+        height: 30,
+        width: 50,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(bottomRight: Radius.circular(14)),
+          gradient: LinearGradient(
+            colors: [
+              Colors.transparent,
+              theme.primary.withOpacity(0.8),
+            ],
+            begin: FractionalOffset.topLeft,
+            end: FractionalOffset.bottomRight,
+            stops: const [0.1, 1.0],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+          child: Linkify(
+            text: hour,
+            style: textTheme.bodyMedium!.copyWith(
+              color: Colors.white,
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

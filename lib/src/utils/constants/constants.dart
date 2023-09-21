@@ -67,6 +67,11 @@ applicationDateFormatter(DateTime inputTime) {
   }
 }
 
+dateFormatterMessage(DateTime messageDate) {
+  final dateFormatter= DateFormat.Hm().format(messageDate);
+  return dateFormatter;
+}
+
 /// Default widget that appears on receipts at [MessageStatus.pending] when a message
 /// is not sent or at the pending state. A custom implementation can have different
 /// widgets for different states.
