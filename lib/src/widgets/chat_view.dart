@@ -59,6 +59,7 @@ class ChatView extends StatefulWidget {
     this.chatOptions,
     this.typeWithChat,
     this.l10n = const ChatViewL10nEs(),
+    this.infoTile,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -153,6 +154,8 @@ class ChatView extends StatefulWidget {
   /// certain properties, see more here [ChatViewL10nEn].
   final ChatViewL10n l10n;
 
+  /// widget info widget
+  final Widget?  infoTile;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -220,6 +223,7 @@ class _ChatViewState extends State<ChatView>
           child: Column(
             children: [
               if (widget.appBar != null) widget.appBar!,
+              widget.infoTile?? const SizedBox.shrink(),
               Expanded(
                 child: Stack(
                   children: [
@@ -269,6 +273,7 @@ class _ChatViewState extends State<ChatView>
                             assignReplyMessage: (message) => _sendMessageKey
                                 .currentState
                                 ?.assignReplyMessage(message),
+                            infoTile: widget.infoTile,
                           );
                         },
                       ),
