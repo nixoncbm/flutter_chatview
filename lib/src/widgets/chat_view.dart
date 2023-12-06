@@ -273,7 +273,6 @@ class _ChatViewState extends State<ChatView>
                             assignReplyMessage: (message) => _sendMessageKey
                                 .currentState
                                 ?.assignReplyMessage(message),
-                            infoTile: widget.infoTile,
                           );
                         },
                       ),
