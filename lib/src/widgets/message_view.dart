@@ -252,9 +252,9 @@ class _MessageViewState extends State<MessageView>
                           ?.call(
                               widget.message,
                               applicationDateFormatter(
-                                  widget.message.createdAt)) ??
-                      lastSeenAgoBuilder(widget.message,
-                          applicationDateFormatter(widget.message.createdAt));
+                                  widget.message.createdAt)) ?? const Icon(Icons.done_all_outlined);
+                      /*lastSeenAgoBuilder(widget.message,
+                          applicationDateFormatter(widget.message.createdAt));*/
                 }
                 return const SizedBox();
               }
