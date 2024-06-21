@@ -121,6 +121,8 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   bool get isEnableSwipeToSeeTime => widget.isEnableSwipeToSeeTime;
 
+  List<Message> listMessage=[];
+
   @override
   void initState() {
     super.initState();
@@ -280,7 +282,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
         return snapshot.connectionState.isActive
             ? GroupedListView<Message, String>(
                 shrinkWrap: true,
-                elements: snapshot.data!,
+                elements: groupConsecutiveMessages(snapshot.data!),
                 groupBy: (element) => element.createdAt.getDateFromDateTime,
                 itemComparator: (message1, message2) =>
                     message1.message.compareTo(message2.message),
@@ -340,6 +342,33 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
               );
       },
     );
+  }
+  List<Message> groupConsecutiveMessages(List<Message> messageObjects) {
+    if (messageObjects.isEmpty) return [];
+
+    List<Message> groupedMessages = [];
+    List<Message> currentGroup = [messageObjects[0]];
+
+    for (int i = 1; i < messageObjects.length; i++) {
+      if (messageObjects[i].message == messageObjects[i - 1].message) {
+        currentGroup.add(messageObjects[i]);
+      } else {
+        // Add the most recent message of the current group
+        currentGroup.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        //groupedMessages.add(currentGroup.first);
+        Message recentMessage = currentGroup.first;
+        recentMessage.repetitionCount = currentGroup.length;
+        groupedMessages.add(recentMessage);
+        currentGroup = [messageObjects[i]];
+      }
+    }
+
+    // Add the last group
+    currentGroup.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    groupedMessages.add(currentGroup.first);
+    Message recentMessage = currentGroup.first;
+    recentMessage.repetitionCount = currentGroup.length;
+    return groupedMessages;
   }
 }
 

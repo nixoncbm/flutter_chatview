@@ -23,6 +23,7 @@ import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/constants/constants.dart';
@@ -69,54 +70,77 @@ class TextMessageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context).colorScheme;
     final textMessage = message.message;
+    final textCount = message.repetitionCount;
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Container(
-          constraints: BoxConstraints(
-              maxWidth: chatBubbleMaxWidth ??
-                  MediaQuery.of(context).size.width * 0.75),
-          padding: _padding ??
-              const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-          margin: _margin ??
-              EdgeInsets.fromLTRB(
-                  5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
-          decoration: BoxDecoration(
-            color: highlightMessage ? highlightColor : _color,
-            borderRadius: _borderRadius(textMessage),
-          ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                textMessage.isUrl
-                    ? LinkPreview(
-                        linkPreviewConfig: _linkPreviewConfig,
-                        url: textMessage,
-                      )
-                    : Linkify(
-                        text: textMessage,
-                        style: _textStyle ??
-                            textTheme.bodyMedium!.copyWith(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                        onOpen: (url) {
-                          _launchURL(url.url);
-                        },
-                      ),
-                Linkify(
-                  text: dateFormatterMessage(message.createdAt).toString(),
-                  style: textTheme.bodyMedium!.copyWith(
+        GestureDetector(
+          onTap: () {
+            if (message.repetitionCount > 1) {
+              Fluttertoast.showToast(
+                  msg:
+                      "Este mensaje ha sido repetido ${message.repetitionCount} veces",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: theme.tertiary,
+                  textColor: theme.tertiaryContainer,
+                  fontSize: 16.0);
+            }
+          },
+          child: Badge(
+            alignment:
+                isMessageBySender ? Alignment.topLeft : Alignment.topRight,
+            isLabelVisible: textCount > 1,
+            label: Text("$textCount"),
+            child: Container(
+                constraints: BoxConstraints(
+                    maxWidth: chatBubbleMaxWidth ??
+                        MediaQuery.of(context).size.width * 0.75),
+                padding: _padding ??
+                    const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                margin: _margin ??
+                    EdgeInsets.fromLTRB(5, 0, 6,
+                        message.reaction.reactions.isNotEmpty ? 15 : 2),
+                decoration: BoxDecoration(
+                  color: highlightMessage ? highlightColor : _color,
+                  borderRadius: _borderRadius(textMessage),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    textMessage.isUrl
+                        ? LinkPreview(
+                            linkPreviewConfig: _linkPreviewConfig,
+                            url: textMessage,
+                          )
+                        : Linkify(
+                            text: textMessage,
+                            style: _textStyle ??
+                                textTheme.bodyMedium!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                            onOpen: (url) {
+                              _launchURL(url.url);
+                            },
+                          ),
+                    Linkify(
+                      text: dateFormatterMessage(message.createdAt).toString(),
+                      style: textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                         fontSize: 12,
                       ),
-                )
-              ],
-            )),
+                    )
+                  ],
+                )),
+          ),
+        ),
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
             key: key,

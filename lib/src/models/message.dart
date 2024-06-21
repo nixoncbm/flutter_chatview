@@ -54,6 +54,9 @@ class Message {
   /// Provides max duration for recorded voice message.
   Duration? voiceMessageDuration;
 
+  /// La variable repetitionCount probablemente se utiliza para almacenar la cantidad de repeticiones de un determinado evento en un programa.
+  int repetitionCount;
+
   Message({
     this.id = '',
     required this.message,
@@ -63,6 +66,7 @@ class Message {
     Reaction? reaction,
     this.messageType = MessageType.text,
     this.voiceMessageDuration,
+    this.repetitionCount = 1,
     MessageStatus status = MessageStatus.pending,
   })  : reaction = reaction ?? Reaction(reactions: [], reactedUserIds: []),
         key = GlobalKey(),
@@ -110,6 +114,7 @@ class Message {
         'reaction': reaction.toJson(),
         'message_type': messageType,
         'voice_message_duration': voiceMessageDuration,
-        'status': status.name
+        'status': status.name,
+        'repetitionCount': repetitionCount,
       };
 }
