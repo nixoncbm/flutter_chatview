@@ -350,7 +350,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     List<Message> currentGroup = [messageObjects[0]];
 
     for (int i = 1; i < messageObjects.length; i++) {
-      if (messageObjects[i].message == messageObjects[i - 1].message) {
+      if (messageObjects[i].message == messageObjects[i - 1].message && messageObjects[i].sendBy == messageObjects[i - 1].sendBy) {
         currentGroup.add(messageObjects[i]);
       } else {
         // Add the most recent message of the current group
