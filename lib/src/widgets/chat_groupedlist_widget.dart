@@ -210,7 +210,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                       )),
           SizedBox(
             height: MediaQuery.of(context).size.width *
-                (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14),
+                (widget.replyMessage.message.isNotEmpty ? 0.3 : 0),
           ),
         ],
       ),

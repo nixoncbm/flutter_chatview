@@ -133,7 +133,7 @@ class TextMessageView extends StatelessWidget {
                     Linkify(
                       text: dateFormatterMessage(message.createdAt).toString(),
                       style: textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
+                        color:isMessageBySender ? Colors.white: theme.primary,
                         fontSize: 12,
                       ),
                     )
