@@ -24,6 +24,7 @@ class ListOptionMessage extends StatelessWidget {
     final themeBlack = Theme.of(context);
     final isDarkMode = themeBlack.brightness == Brightness.dark;
 
+
     return Column(
       children: [
         for (ChatOption chatOption in listChatOption) ...[

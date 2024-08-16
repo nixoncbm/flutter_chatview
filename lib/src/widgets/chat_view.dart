@@ -58,6 +58,7 @@ class ChatView extends StatefulWidget {
     this.featureActiveConfig = const FeatureActiveConfig(),
     this.chatOptions,
     this.typeWithChat,
+    this.typeListOption,
     this.l10n = const ChatViewL10nEs(),
     this.infoTile,
   })  : chatBackgroundConfig =
@@ -149,6 +150,9 @@ class ChatView extends StatefulWidget {
   /// TypeWithChat  store clipper
   final int? typeWithChat;
 
+  /// typeListOption  store clipper
+  final int? typeListOption;
+
   /// Localized copy. Extend [ChatViewL10n] class to create your own copy or use
   /// existing one, like the default [ChatViewL10nEn]. You can customize only
   /// certain properties, see more here [ChatViewL10nEn].
@@ -205,6 +209,7 @@ class _ChatViewState extends State<ChatView>
         chatController: chatController,
         featureActiveConfig: featureActiveConfig,
         currentUser: widget.currentUser,
+
         child: Container(
           height:
               chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,
@@ -292,6 +297,7 @@ class _ChatViewState extends State<ChatView>
                   replyMessage.value = const ReplyMessage(),
                   chatOptions: widget.chatOptions,
                   typeWithChat: widget.typeWithChat,
+                  typeListOption: widget.typeListOption,
                 ),
             ],
           ),

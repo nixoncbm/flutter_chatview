@@ -43,7 +43,8 @@ class SendMessageWidget extends StatefulWidget {
     this.onReplyCallback,
     this.onReplyCloseCallback,
       this.chatOptions,
-      this.typeWithChat})
+      this.typeWithChat,
+      this.typeListOption})
       : super(key: key);
 
   /// Provides call back when user tap on send button on text field.
@@ -72,6 +73,9 @@ class SendMessageWidget extends StatefulWidget {
 
   /// TypeWithChat  store clipper
   final int? typeWithChat;
+
+  /// typeListOption  store clipper
+  final int? typeListOption;
 
   @override
   State<SendMessageWidget> createState() => SendMessageWidgetState();
@@ -242,6 +246,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           onImageSelected: _onImageSelected,
                           chatOptions: widget.chatOptions,
                           typeWithChat: widget.typeWithChat,
+                          typeListOption: widget.typeListOption,
                           onChatOption: (chatOption) =>
                               _onChatOption(chatOption),
                         )
