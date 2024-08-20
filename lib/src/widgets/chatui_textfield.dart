@@ -49,12 +49,9 @@ class ChatUITextField extends StatefulWidget {
       required this.onImageSelected,
       this.chatOptions,
       this.typeWithChat,
-      this.typeListOption = 1,
       required this.onChatOption})
       : super(key: key);
 
-  ///TypeListOption
-  final int? typeListOption;
 
   /// Provides configuration of default text field in chat.
   final SendMessageConfiguration? sendMessageConfig;
