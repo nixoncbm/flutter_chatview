@@ -106,6 +106,7 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context).colorScheme;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -137,14 +138,14 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
                         icon:
                             state.isStopped || state.isPaused || state.isInitialised
                                 ? widget.config?.playIcon ??
-                                    const Icon(
+                                    Icon(
                                       Icons.play_arrow,
-                                      color: Colors.white,
+                                      color: widget.isMessageBySender? Colors.white: theme.primary,
                                     )
                                 : widget.config?.pauseIcon ??
-                                    const Icon(
+                                    Icon(
                                       Icons.stop,
-                                      color: Colors.white,
+                                      color: widget.isMessageBySender? Colors.white: theme.primary,
                                     ),
                       );
                     },
@@ -155,7 +156,8 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
                     playerController: controller,
                     waveformType: WaveformType.fitWidth,
                     playerWaveStyle:
-                        widget.config?.playerWaveStyle ?? playerWaveStyle,
+                        widget.config?.playerWaveStyle ??
+                            PlayerWaveStyle(fixedWaveColor: widget.isMessageBySender? Colors.white: theme.primary),
                     padding: widget.config?.waveformPadding ??
                         const EdgeInsets.only(right: 10),
                     margin: widget.config?.waveformMargin,
@@ -169,7 +171,7 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
               Linkify(
                 text: dateFormatterMessage(widget.message.createdAt).toString(),
                 style: textTheme.bodyMedium!.copyWith(
-                  color: Colors.white,
+                  color: widget.isMessageBySender? Colors.white: theme.primary,
                   fontSize: 12,
                 ),
               )
