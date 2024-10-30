@@ -52,13 +52,13 @@ class ListOptionMessage extends StatelessWidget {
                         color: backgroundColor ??
                             (isDarkMode
                                 ? theme.secondary .withOpacity(0.3)
-                                : theme.tertiaryContainer),
+                                : theme.surface),
                         border: Border.all(
                           width: 1.0,
                           color: backgroundColor ??
                               (isDarkMode
                                   ? theme.tertiary.withOpacity(0.3)
-                                  : theme.tertiaryContainer),
+                                  : theme.surface),
                         ),
                       ),
                       margin: const EdgeInsets.only(

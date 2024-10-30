@@ -173,12 +173,12 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                     color: isDarkMode
                         ? theme.secondary.withOpacity(0.3)
-                        : theme.tertiaryContainer,
+                        : Colors.white,
                     border: Border.all(
                       width: 1.0,
                       color: isDarkMode
                           ? theme.tertiary.withOpacity(0.3)
-                          : theme.tertiaryContainer,
+                          : Colors.white,
                     ),
                   ),
                   padding: const EdgeInsets.only(left: 5.0, top: 5, bottom: 5),
@@ -214,7 +214,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                             focusNode: widget.focusNode,
                             controller: widget.textEditingController,
                             style: textFieldConfig?.textStyle ??
-                                const TextStyle(color: Colors.white),
+                                 TextStyle(color: theme.tertiary),
                             maxLines: textFieldConfig?.maxLines ?? 5,
                             minLines: textFieldConfig?.minLines ?? 1,
                             keyboardType: textFieldConfig?.textInputType,
@@ -232,7 +232,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                   TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
-                                    color:theme.primary,
+                                    color:theme.tertiary,
                                     letterSpacing: 0.25,
                                   ),
                               contentPadding: textFieldConfig?.contentPadding ??
@@ -240,7 +240,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                               border: _outLineBorder,
                               focusedBorder: _outLineBorder,
                               enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.transparent),
+                                borderSide:  BorderSide(color: theme.primary),
                                 borderRadius: textFieldConfig?.borderRadius ??
                                     BorderRadius.circular(textFieldBorderRadius),
                               ),
@@ -259,7 +259,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                 _inputText.value = '';
                               },
                               icon: sendMessageConfig?.sendButtonIcon ??
-                                  const Icon(Icons.send),
+                                  Icon(Icons.send, color: theme.tertiary,),
                             );
                           } else {
                             return Row(
@@ -277,8 +277,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                           imagePickerIconsConfig?.cameraImagePickerIcon ??
                                               Icon(
                                                 Icons.camera_alt_outlined,
-                                                color: imagePickerIconsConfig
-                                                    ?.cameraIconColor,
+                                                color: theme.tertiary,
                                               ),
                                     ),
                                   if (sendMessageConfig?.enableGalleryImagePicker ?? true)
@@ -289,12 +288,11 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                         config:
                                             sendMessageConfig?.imagePickerConfiguration,
                                       ),
-                                      icon: imagePickerIconsConfig
-                                              ?.galleryImagePickerIcon ??
+                                      icon: imagePickerIconsConfig?.galleryImagePickerIcon ??
                                           Icon(
                                             Icons.image,
                                             color:
-                                                imagePickerIconsConfig?.galleryIconColor,
+                                            theme.tertiary,
                                           ),
                                     ),
                                 ],
@@ -309,7 +307,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                             ? voiceRecordingConfig?.micIcon
                                             : voiceRecordingConfig?.stopIcon) ??
                                         Icon(isRecordingValue ? Icons.stop : Icons.mic),
-                                    color: voiceRecordingConfig?.recorderIconColor,
+                                    color: theme.tertiary,
                                   )
                               ],
                             );

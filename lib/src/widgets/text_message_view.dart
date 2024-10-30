@@ -108,7 +108,7 @@ class TextMessageView extends StatelessWidget {
                     EdgeInsets.fromLTRB(5, 0, 6,
                         message.reaction.reactions.isNotEmpty ? 15 : 2),
                 decoration: BoxDecoration(
-                  color: highlightMessage ? highlightColor : _color,
+                  color: highlightMessage ? highlightColor : theme.surface,
                   borderRadius: _borderRadius(textMessage),
                 ),
                 child: Column(
@@ -121,11 +121,7 @@ class TextMessageView extends StatelessWidget {
                           )
                         : Linkify(
                             text: textMessage,
-                            style: _textStyle ??
-                                textTheme.bodyMedium!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
+                            style: TextStyle(color: theme.tertiary),
                             onOpen: (url) {
                               _launchURL(url.url);
                             },
@@ -133,7 +129,7 @@ class TextMessageView extends StatelessWidget {
                     Linkify(
                       text: dateFormatterMessage(message.createdAt).toString(),
                       style: textTheme.bodyMedium!.copyWith(
-                        color:isMessageBySender ? Colors.white: theme.primary,
+                        color: theme.tertiary,
                         fontSize: 12,
                       ),
                     )

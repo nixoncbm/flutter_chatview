@@ -28,6 +28,9 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 
 import '../values/typedefs.dart';
 
+import 'package:flutter/foundation.dart' as foundation;
+
+
 class EmojiPickerWidget extends StatelessWidget {
   const EmojiPickerWidget({Key? key, required this.onSelected})
       : super(key: key);
@@ -60,13 +63,30 @@ class EmojiPickerWidget extends StatelessWidget {
               onEmojiSelected: (Category? category, Emoji emoji) =>
                   onSelected(emoji.emoji),
               config: Config(
-                columns: 7,
-                emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
-                initCategory: Category.RECENT,
-                bgColor: Colors.white,
-                recentTabBehavior: RecentTabBehavior.NONE,
-                recentsLimit: 28,
+                height: 256,
+                checkPlatformCompatibility: true,
+                viewOrderConfig: const ViewOrderConfig(),
+                emojiViewConfig: EmojiViewConfig(
+                  // Issue: https://github.com/flutter/flutter/issues/28894
+                  emojiSizeMax: 28 *
+                      (foundation.defaultTargetPlatform ==
+                          TargetPlatform.iOS
+                          ? 1.2
+                          : 1.0),
+                ),
+                skinToneConfig: const SkinToneConfig(),
+                categoryViewConfig: const CategoryViewConfig(),
+                bottomActionBarConfig: const BottomActionBarConfig(),
+                searchViewConfig: const SearchViewConfig(),
               ),
+              // config: Config(
+              //   columns: 7,
+              //   emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
+              //   initCategory: Category.RECENT,
+              //   bgColor: Colors.white,
+              //   recentTabBehavior: RecentTabBehavior.NONE,
+              //   recentsLimit: 28,
+              // ),
             ),
           ),
         ],
