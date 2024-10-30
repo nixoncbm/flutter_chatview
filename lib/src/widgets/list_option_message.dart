@@ -51,7 +51,7 @@ class ListOptionMessage extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(10.0)),
                         color: backgroundColor ??
                             (isDarkMode
-                                ? theme.secondary .withOpacity(0.3)
+                                ? theme.surface.withOpacity(0.3)
                                 : theme.surface),
                         border: Border.all(
                           width: 1.0,
@@ -88,7 +88,7 @@ class ListOptionMessage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: textBackgroundColor ??
                                     (isDarkMode
-                                        ? theme.tertiaryContainer
+                                        ? Colors.white
                                         : theme.tertiary)),
                           ),
                         ],
