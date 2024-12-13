@@ -106,11 +106,18 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
   ChatOptionConfiguration? get chatOptionConfig =>
       sendMessageConfig?.chatOptionConfiguration;
 
-  OutlineInputBorder get _outLineBorder => OutlineInputBorder(
+  OutlineInputBorder _outLineBorder({Color borderColor = Colors.transparent}) {
+    return OutlineInputBorder(
+      borderSide: BorderSide(color: borderColor),
+      borderRadius: textFieldConfig?.borderRadius ?? BorderRadius.circular(textFieldBorderRadius),
+    );
+  }
+
+ /* OutlineInputBorder get _outLineBorder => OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.transparent),
         borderRadius:
             textFieldConfig?.borderRadius ?? BorderRadius.circular(textFieldBorderRadius),
-      );
+      );*/
 
   ValueNotifier<TypeWriterStatus> composingStatus = ValueNotifier(TypeWriterStatus.typed);
 
@@ -236,9 +243,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                     letterSpacing: 0.25,
                                   ),
                               contentPadding: textFieldConfig?.contentPadding ??
-                                  const EdgeInsets.symmetric(horizontal: 6),
-                              border: _outLineBorder,
-                              focusedBorder: _outLineBorder,
+                                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              border: _outLineBorder(),
+                              focusedBorder: _outLineBorder(borderColor: theme.tertiary),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:  BorderSide(color: theme.primary),
                                 borderRadius: textFieldConfig?.borderRadius ??
