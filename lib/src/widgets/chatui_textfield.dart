@@ -250,7 +250,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                       ValueListenableBuilder<String>(
                         valueListenable: _inputText,
                         builder: (_, inputTextValue, child) {
-                          if (inputTextValue.isNotEmpty) {
+                          if (inputTextValue.trim().isNotEmpty) {
                             return IconButton(
                               color: sendMessageConfig?.defaultSendButtonColor ??
                                   theme.primary,
