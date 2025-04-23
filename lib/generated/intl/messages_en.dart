@@ -22,25 +22,25 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "message": MessageLookupByLibrary.simpleMessage("Mensaje"),
-    "more": MessageLookupByLibrary.simpleMessage("Más"),
-    "noMessages": MessageLookupByLibrary.simpleMessage("Ningún mensaje"),
-    "photo": MessageLookupByLibrary.simpleMessage("Foto"),
+    "message": MessageLookupByLibrary.simpleMessage("Message"),
+    "more": MessageLookupByLibrary.simpleMessage("More"),
+    "noMessages": MessageLookupByLibrary.simpleMessage("No messages"),
+    "photo": MessageLookupByLibrary.simpleMessage("Photo"),
     "reactionPopupTitle": MessageLookupByLibrary.simpleMessage(
-      "Toca y mantén para multiplicar tu reacción",
+      "Tap and hold to multiply your reaction",
     ),
-    "reload": MessageLookupByLibrary.simpleMessage("Recargar"),
-    "repliedBy": MessageLookupByLibrary.simpleMessage("Respondido por"),
-    "repliedToYou": MessageLookupByLibrary.simpleMessage("Respondido a ti"),
-    "reply": MessageLookupByLibrary.simpleMessage("Responder"),
-    "replyTo": MessageLookupByLibrary.simpleMessage("Respondiendo a"),
-    "send": MessageLookupByLibrary.simpleMessage("Enviar"),
+    "reload": MessageLookupByLibrary.simpleMessage("Reload"),
+    "repliedBy": MessageLookupByLibrary.simpleMessage("Replied by"),
+    "repliedToYou": MessageLookupByLibrary.simpleMessage("Replied to you"),
+    "reply": MessageLookupByLibrary.simpleMessage("Reply"),
+    "replyTo": MessageLookupByLibrary.simpleMessage("Replying to"),
+    "send": MessageLookupByLibrary.simpleMessage("Send"),
     "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
-      "Algo salió mal !!",
+      "Something went wrong!!",
     ),
-    "today": MessageLookupByLibrary.simpleMessage("Hoy"),
-    "unsend": MessageLookupByLibrary.simpleMessage("Deshacer"),
-    "yesterday": MessageLookupByLibrary.simpleMessage("Ayer"),
-    "you": MessageLookupByLibrary.simpleMessage("Tú"),
+    "today": MessageLookupByLibrary.simpleMessage("Today"),
+    "unsend": MessageLookupByLibrary.simpleMessage("Unsend"),
+    "yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
+    "you": MessageLookupByLibrary.simpleMessage("You"),
   };
 }
