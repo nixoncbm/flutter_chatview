@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
-import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
+import 'package:chatview/generated/l10n.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -112,11 +112,11 @@ extension ChatViewStateTitleExtension on String? {
       case ChatViewState.hasMessages:
         return this ?? '';
       case ChatViewState.noData:
-        return this ?? InheritedViewL10n.of(context).l10n.noMessages;
+        return this ?? S.current.noMessages;
       case ChatViewState.loading:
         return this ?? '';
       case ChatViewState.error:
-        return this ?? InheritedViewL10n.of(context).l10n.somethingWentWrong;
+        return this ?? S.current.somethingWentWrong;
     }
   }
 }

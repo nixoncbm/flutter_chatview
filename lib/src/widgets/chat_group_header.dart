@@ -19,9 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/generated/l10n.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:flutter/material.dart';
 
 class ChatGroupHeader extends StatelessWidget {
@@ -44,9 +44,9 @@ class ChatGroupHeader extends StatelessWidget {
           const EdgeInsets.symmetric(vertical: 12),
       child: Text(
         day.getDay == '0'
-            ? InheritedViewL10n.of(context).l10n.today
+            ? S.current.today
             : day.getDay == '1'
-                ? InheritedViewL10n.of(context).l10n.yesterday
+                ? S.current.yesterday
                 : day.getDay,
         textAlign: TextAlign.center,
         style: groupSeparatorConfig?.textStyle ?? const TextStyle(fontSize: 17),

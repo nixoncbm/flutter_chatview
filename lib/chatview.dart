@@ -22,6 +22,10 @@
 
 library chatview;
 
+import 'dart:ui';
+
+import 'package:chatview/generated/l10n.dart';
+
 export 'src/chatview_l10n.dart';
 export 'src/widgets/chat_view.dart';
 export 'src/models/models.dart';
@@ -33,3 +37,11 @@ export 'package:audio_waveforms/audio_waveforms.dart'
     show WaveStyle, PlayerWaveStyle;
 export 'src/models/receipts_widget_config.dart';
 export 'src/extensions/extensions.dart' show MessageTypes;
+
+
+class LocalizationsChatView {
+  static const delegate = S.delegate;
+
+  static List<Locale> get supportedLocales =>
+      [...delegate.supportedLocales, ...LocalizationsChatView.supportedLocales];
+}

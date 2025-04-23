@@ -1,0 +1,18 @@
+{
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "repliedToYou": "Replied to you",
+  "repliedBy": "Replied by",
+  "more": "More",
+  "unsend": "Unsend",
+  "reply": "Reply",
+  "replyTo": "Replying to",
+  "message": "Message",
+  "reactionPopupTitle": "Tap and hold to multiply your reaction",
+  "photo": "Photo",
+  "send": "Send",
+  "you": "You",
+  "noMessages": "No messages",
+  "somethingWentWrong": "Something went wrong!!",
+  "reload": "Reload"
+}
