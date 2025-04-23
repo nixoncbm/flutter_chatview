@@ -23,9 +23,8 @@ import 'dart:io' if (kIsWeb) 'dart:html';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
+import 'package:chatview/generated/l10n.dart';
 import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/models/chat_option.dart';
-import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -42,9 +41,8 @@ class SendMessageWidget extends StatefulWidget {
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
-      this.chatOptions,
-      this.typeWithChat})
-      : super(key: key);
+    this.chatOptions,
+  }) : super(key: key);
 
   /// Provides call back when user tap on send button on text field.
   final StringMessageCallBack onSendTap;
@@ -68,10 +66,7 @@ class SendMessageWidget extends StatefulWidget {
   final ChatController chatController;
 
   /// Option message direct
-  final List<ChatOption>? chatOptions;
-
-  /// TypeWithChat  store clipper
-  final int? typeWithChat;
+  final Widget? chatOptions;
 
   @override
   State<SendMessageWidget> createState() => SendMessageWidgetState();
@@ -90,7 +85,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
       : null;
 
   String get _replyTo => replyMessage.replyTo == currentUser?.id
-      ? InheritedViewL10n.of(context).l10n.you
+      ? S.current.you
       : repliedUser?.name ?? '';
 
   ChatUser? currentUser;
@@ -105,7 +100,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final replyTitle = "${InheritedViewL10n.of(context).l10n.replyTo} $_replyTo";
+    final replyTitle = "${S.current.replyTo} $_replyTo";
     return widget.sendMessageBuilder != null
         ? Positioned(
             right: 0,
@@ -241,9 +236,9 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           onRecordingComplete: _onRecordingComplete,
                           onImageSelected: _onImageSelected,
                           chatOptions: widget.chatOptions,
-                          typeWithChat: widget.typeWithChat,
+                  /*        typeWithChat: widget.typeWithChat,
                           onChatOption: (chatOption) =>
-                              _onChatOption(chatOption),
+                              _onChatOption(chatOption),*/
                         )
                       ],
                     ),
@@ -285,7 +280,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
               Colors.grey.shade700,
         ),
         Text(
-          InheritedViewL10n.of(context).l10n.photo,
+          S.current.photo,
           style: TextStyle(
             color: widget.sendMessageConfig?.replyMessageColor ?? Colors.black,
           ),

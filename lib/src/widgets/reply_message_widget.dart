@@ -20,9 +20,9 @@
  * SOFTWARE.
  */
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:chatview/generated/l10n.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/constants/constants.dart';
@@ -56,7 +56,7 @@ class ReplyMessageWidget extends StatelessWidget {
     final chatController = ChatViewInheritedWidget.of(context)?.chatController;
     final messagedUser =
         chatController?.getUserFromId(message.replyMessage.replyBy);
-    final replyBy = replyBySender ? InheritedViewL10n.of(context).l10n.you : messagedUser?.name;
+    final replyBy = replyBySender ? S.current.you : messagedUser?.name;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -73,7 +73,7 @@ class ReplyMessageWidget extends StatelessWidget {
               replyBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
-              "${InheritedViewL10n.of(context).l10n.repliedBy} $replyBy",
+              "${S.current.repliedBy} $replyBy",
               style: repliedMessageConfig?.replyTitleTextStyle ??
                   textTheme.bodyMedium!
                       .copyWith(fontSize: 14, letterSpacing: 0.3),

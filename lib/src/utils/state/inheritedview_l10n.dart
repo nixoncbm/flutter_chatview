@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+/*import 'package:flutter/widgets.dart';
 
 import '../../chatview_l10n.dart';
 
@@ -20,4 +20,4 @@ class InheritedViewL10n extends InheritedWidget {
   @override
   bool updateShouldNotify(InheritedViewL10n oldWidget) =>
       l10n.hashCode != oldWidget.l10n.hashCode;
-}
+}*/

@@ -1,0 +1,19 @@
+{
+  "today": "Hoy",
+  "yesterday":"Ayer",
+  "repliedToYou":"Respondido a ti",
+  "repliedBy":"Respondido por",
+  "more":"Más",
+  "unsend":"Deshacer",
+  "reply":"Responder",
+  "replyTo":"Respondiendo a",
+  "message":"Mensaje",
+  "reactionPopupTitle":"Toca y mantén para multiplicar tu reacción",
+  "photo":"Foto",
+  "send":"Enviar",
+  "you":"Tú",
+  "noMessages":"Ningún mensaje",
+  "somethingWentWrong":"Algo salió mal !!",
+  "reload":"Recargar",
+  "report":"Informe"
+}
