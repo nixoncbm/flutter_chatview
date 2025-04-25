@@ -20,13 +20,13 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
-import 'package:chatview/src/models/chat_option.dart';
 import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:chatview/src/widgets/chat_list_widget.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatview_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart';
+
 import '../values/custom_time_messages.dart';
 import 'send_message_widget.dart';
 
@@ -57,7 +57,7 @@ class ChatView extends StatefulWidget {
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
     this.chatOptions,
-    this.typeWithChat,
+    ///this.typeWithChat,
     this.l10n = const ChatViewL10nEs(),
     this.infoTile,
   })  : chatBackgroundConfig =
@@ -144,10 +144,10 @@ class ChatView extends StatefulWidget {
   final VoidCallBack? onChatListTap;
 
   /// Options de chat messages direct
-  final List<ChatOption>? chatOptions;
+  final Widget? chatOptions;
 
   /// TypeWithChat  store clipper
-  final int? typeWithChat;
+  //final int? typeWithChat;
 
   /// Localized copy. Extend [ChatViewL10n] class to create your own copy or use
   /// existing one, like the default [ChatViewL10nEn]. You can customize only
@@ -292,7 +292,7 @@ class _ChatViewState extends State<ChatView>
                   onReplyCloseCallback: () =>
                   replyMessage.value = const ReplyMessage(),
                   chatOptions: widget.chatOptions,
-                  typeWithChat: widget.typeWithChat,
+                  //typeWithChat: widget.typeWithChat,
                 ),
             ],
           ),
