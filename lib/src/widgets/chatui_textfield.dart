@@ -23,8 +23,8 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:chatview/generated/l10n.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
+import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,8 +43,11 @@ class ChatUITextField extends StatefulWidget {
       required this.onPressed,
       required this.onRecordingComplete,
       required this.onImageSelected,
-    this.chatOptions,
+      this.chatOptions,
+/*      this.typeWithChat,
+      required this.onChatOption,*/
   }) : super(key: key);
+
 
   /// Provides configuration of default text field in chat.
   final SendMessageConfiguration? sendMessageConfig;
@@ -66,6 +69,12 @@ class ChatUITextField extends StatefulWidget {
 
   /// Option message direct
   final Widget? chatOptions;
+
+  /// TypeWithChat  store clipper
+  //final int? typeWithChat;
+
+  /// Provides callback when user tap on text field.
+  //final Function(String?) onChatOption;
 
   @override
   State<ChatUITextField> createState() => _ChatUITextFieldState();
@@ -220,7 +229,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                   TextCapitalization.sentences,
                           decoration: InputDecoration(
                             hintText: textFieldConfig?.hintText ??
-                                S.current.message,
+                                InheritedViewL10n.of(context).l10n.message,
                             fillColor:
                                 sendMessageConfig?.textFieldBackgroundColor ??
                                     Colors.white,
