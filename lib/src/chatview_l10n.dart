@@ -1,4 +1,3 @@
-/*
 import 'package:flutter/material.dart';
 
 /// Base chat l10n containing all required properties to provide localized copy.
@@ -93,4 +92,4 @@ class ChatViewL10nEs extends ChatViewL10n {
     super.somethingWentWrong = "Algo salió mal !!",
     super.reload = "Recargar",
   });
-}*/
+}

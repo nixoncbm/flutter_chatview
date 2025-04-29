@@ -1,6 +1,6 @@
 import 'package:chatview/chatview.dart';
-import 'package:chatview/generated/l10n.dart';
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/utils/state/inheritedview_l10n.dart';
 import 'package:flutter/material.dart';
 
 class ChatViewStateWidget extends StatelessWidget {
@@ -63,7 +63,7 @@ class ChatViewStateWidget extends StatelessWidget {
                         chatViewStateWidgetConfig?.reloadButtonColor ??
                             const Color(0xffEE5366),
                   ),
-                  child: Text(S.current.reload),
+                  child: Text(InheritedViewL10n.of(context).l10n.reload),
                 )
               ]
             ],
