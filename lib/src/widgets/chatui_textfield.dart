@@ -361,14 +361,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       final path = directory.path;
       await controller?.record(
           path: '$path/${"$date.m4a"}',
-          recorderSettings: RecorderSettings(
-            sampleRate: Platform.isIOS ? 16000 : 16000,
-            bitRate: Platform.isIOS ? 128000 : 64000,
-            androidEncoderSettings: AndroidEncoderSettings(),
-          ),
-       /*   sampleRate: Platform.isIOS
+          sampleRate: Platform.isIOS
               ? sendMessageConfig?.voiceRecordingConfiguration?.sampleRate
-              : null*/
+              : null
       );
       isRecording.value = true;
       if (sendMessageConfig?.voiceRecordingConfiguration?.maxDuration != null) {
