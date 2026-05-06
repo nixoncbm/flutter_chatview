@@ -52,7 +52,8 @@ class VoiceMessageView extends StatefulWidget {
 
 class _VoiceMessageViewState extends State<VoiceMessageView> {
   late PlayerController controller;
-  late StreamSubscription<PlayerState> playerStateSubscription;
+  StreamSubscription<PlayerState>? playerStateSubscription;
+  StreamSubscription<void>? _completionSubscription;
 
   final ValueNotifier<PlayerState> _playerState =
       ValueNotifier(PlayerState.stopped);
@@ -64,30 +65,42 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
   @override
   void initState() {
     super.initState();
+    controller = PlayerController();
 
-    if(!widget.message.message.isUrl){
-      controller = PlayerController()
-        ..preparePlayer(
-          path: widget.message.message,
-          noOfSamples: widget.config?.playerWaveStyle
-              ?.getSamplesForWidth(widget.screenWidth * 0.5) ??
-              playerWaveStyle.getSamplesForWidth(widget.screenWidth * 0.5),
-        ).whenComplete(() => widget.onMaxDuration?.call(controller.maxDuration));
-      playerStateSubscription = controller.onPlayerStateChanged
-          .listen((state) => _playerState.value = state);
+    playerStateSubscription = controller.onPlayerStateChanged
+        .listen((state) => _playerState.value = state);
+
+    // FinishMode.pause mantiene el player vivo (no lo dispone) al terminar.
+    // seekTo solo funciona en estado paused/playing, nunca en stopped, por eso
+    // escuchamos onCompletion (estado ya es paused en ese momento) para resetear.
+    _completionSubscription = controller.onCompletion.listen((_) {
+      controller.seekTo(0);
+    });
+
+    if (!widget.message.message.isUrl) {
+      _preparePlayerWithPath(widget.message.message);
     } else {
-      controller = PlayerController();
-      downloadAudioFromUrl(widget.message.message, widget.message.id).then((audioDownloaded) {
-        controller.preparePlayer(
-          path: audioDownloaded,
-          noOfSamples: widget.config?.playerWaveStyle
-              ?.getSamplesForWidth(widget.screenWidth * 0.5) ??
-              playerWaveStyle.getSamplesForWidth(widget.screenWidth * 0.5),
-        ).whenComplete(() => widget.onMaxDuration?.call(controller.maxDuration));
-        playerStateSubscription = controller.onPlayerStateChanged
-            .listen((state) => _playerState.value = state);
+      downloadAudioFromUrl(widget.message.message, widget.message.id)
+          .then((path) {
+        if (mounted) _preparePlayerWithPath(path);
       });
     }
+  }
+
+  void _preparePlayerWithPath(String path) {
+    controller
+        .preparePlayer(
+      path: path,
+      noOfSamples: widget.config?.playerWaveStyle
+              ?.getSamplesForWidth(widget.screenWidth * 0.5) ??
+          playerWaveStyle.getSamplesForWidth(widget.screenWidth * 0.5),
+    )
+        .whenComplete(() {
+      // FinishMode.pause: al terminar el audio el player queda en paused
+      // (recursos intactos) en lugar de disposed (FinishMode.stop default).
+      controller.setFinishMode(finishMode: FinishMode.pause);
+      widget.onMaxDuration?.call(controller.maxDuration);
+    });
   }
 
   Future<String> downloadAudioFromUrl(String url, String id) async {
@@ -97,7 +110,8 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
 
   @override
   void dispose() {
-    playerStateSubscription.cancel();
+    _completionSubscription?.cancel();
+    playerStateSubscription?.cancel();
     controller.dispose();
     _playerState.dispose();
     super.dispose();
@@ -119,7 +133,7 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
                     : widget.inComingChatBubbleConfig?.color,
               ),
           padding: widget.config?.padding ??
-              const EdgeInsets.only(left: 8,right: 8, bottom: 8),
+              const EdgeInsets.only(left: 8, right: 8, bottom: 8),
           margin: widget.config?.margin ??
               EdgeInsets.symmetric(
                 horizontal: 8,
@@ -135,18 +149,21 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
                     builder: (context, state, child) {
                       return IconButton(
                         onPressed: _playOrPause,
-                        icon:
-                            state.isStopped || state.isPaused || state.isInitialised
-                                ? widget.config?.playIcon ??
-                                    Icon(
-                                      Icons.play_arrow,
-                                      color: widget.isMessageBySender? Colors.white: theme.primary,
-                                    )
-                                : widget.config?.pauseIcon ??
-                                    Icon(
-                                      Icons.stop,
-                                      color: widget.isMessageBySender? Colors.white: theme.primary,
-                                    ),
+                        icon: state.isPlaying
+                            ? widget.config?.pauseIcon ??
+                                Icon(
+                                  Icons.stop,
+                                  color: widget.isMessageBySender
+                                      ? Colors.white
+                                      : theme.primary,
+                                )
+                            : widget.config?.playIcon ??
+                                Icon(
+                                  Icons.play_arrow,
+                                  color: widget.isMessageBySender
+                                      ? Colors.white
+                                      : theme.primary,
+                                ),
                       );
                     },
                     valueListenable: _playerState,
@@ -155,13 +172,17 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
                     size: Size(widget.screenWidth * 0.50, 60),
                     playerController: controller,
                     waveformType: WaveformType.fitWidth,
-                    playerWaveStyle:
-                        widget.config?.playerWaveStyle ??
-                            PlayerWaveStyle(fixedWaveColor: widget.isMessageBySender? Colors.white: theme.primary),
+                    playerWaveStyle: widget.config?.playerWaveStyle ??
+                        PlayerWaveStyle(
+                          fixedWaveColor: widget.isMessageBySender
+                              ? Colors.white
+                              : theme.primary,
+                        ),
                     padding: widget.config?.waveformPadding ??
                         const EdgeInsets.only(right: 10),
                     margin: widget.config?.waveformMargin,
-                    animationCurve: widget.config?.animationCurve ?? Curves.easeIn,
+                    animationCurve:
+                        widget.config?.animationCurve ?? Curves.easeIn,
                     animationDuration: widget.config?.animationDuration ??
                         const Duration(milliseconds: 500),
                     enableSeekGesture: widget.config?.enableSeekGesture ?? true,
@@ -171,7 +192,8 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
               Linkify(
                 text: dateFormatterMessage(widget.message.createdAt).toString(),
                 style: textTheme.bodyMedium!.copyWith(
-                  color: widget.isMessageBySender? Colors.white: theme.primary,
+                  color:
+                      widget.isMessageBySender ? Colors.white : theme.primary,
                   fontSize: 12,
                 ),
               )
@@ -188,18 +210,16 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
     );
   }
 
-  void _playOrPause() {
+  Future<void> _playOrPause() async {
     assert(
       defaultTargetPlatform == TargetPlatform.iOS ||
           defaultTargetPlatform == TargetPlatform.android,
       "Voice messages are only supported with android and ios platform",
     );
-    if (playerState.isInitialised ||
-        playerState.isPaused ||
-        playerState.isStopped) {
-      controller.startPlayer();//finishMode: FinishMode.pause
-    } else {
-      controller.pausePlayer();
+    if (playerState.isPlaying) {
+      await controller.pausePlayer();
+    } else if (playerState.isPaused || playerState.isInitialised) {
+      await controller.startPlayer();
     }
   }
 }
